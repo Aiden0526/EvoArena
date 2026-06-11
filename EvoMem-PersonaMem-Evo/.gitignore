@@ -1,0 +1,18 @@
+# Local experiment outputs
+results/
+logs/
+patch_results/
+robust_results/
+cached_memories*/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

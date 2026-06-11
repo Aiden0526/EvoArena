@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EvoArena: Tracking Memory Evolution for Robust LLM Agents in Dynamic Environments">
+  <meta property="og:title" content="EvoArena">
+  <meta property="og:description" content="A benchmark suite and patch-based memory paradigm for evaluating LLM agents in evolving environments.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="static/images/evoarena_overall_performance.png">
+  <title>EvoArena</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="#">EvoArena</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#benchmark">Benchmark</a>
+        <a href="#composition">Dataset</a>
+        <a href="#evomem">EvoMem</a>
+        <a href="#results">Results</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#bibtex">BibTeX</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <h1>EvoArena: Tracking Memory Evolution for Robust LLM Agents in Dynamic Environments</h1>
+        <p class="subtitle">
+          EvoArena evaluates LLM agents in environments where terminal workflows, software repositories,
+          and user preferences evolve over time. EvoMem augments agent memory with patch histories that
+          preserve what changed, why it changed, and when old behavior still matters.
+        </p>
+
+        <div class="authors">
+          <span><a href="https://aiden0526.github.io/" target="_blank" rel="noopener">Jundong Xu</a><sup>1,*</sup></span>
+          <span>Qingchuan Li<sup>1,*</sup></span>
+          <span>Jiaying Wu<sup>1</sup></span>
+          <span>Yihuai Lan<sup>2</sup></span>
+          <span>Shuyue Stella Li<sup>3</sup></span>
+          <span>Huichi Zhou<sup>4</sup></span>
+          <span>Bowen Jiang<sup>5</sup></span>
+          <span>Lei Wang<sup>3</sup></span>
+          <span>Jun Wang<sup>4</sup></span>
+          <span>Anh Tuan Luu<sup>6</sup></span>
+          <span>Caiming Xiong<sup>7</sup></span>
+          <span>Hae Won Park<sup>8</sup></span>
+          <span>Bryan Hooi<sup>1</sup></span>
+          <span><a href="https://zhiyuanhubj.github.io/" target="_blank" rel="noopener">Zhiyuan Hu</a><sup>1,8</sup></span>
+        </div>
+        <div class="affiliations">
+          <span><sup>1</sup>National University of Singapore</span>
+          <span><sup>2</sup>Singapore Management University</span>
+          <span><sup>3</sup>University of Washington</span>
+          <span><sup>4</sup>University College London</span>
+          <span><sup>5</sup>University of Pennsylvania</span>
+          <span><sup>6</sup>Nanyang Technological University</span>
+          <span><sup>7</sup>Recursive</span>
+          <span><sup>8</sup>Massachusetts Institute of Technology</span>
+        </div>
+        <p class="equal-note"><sup>*</sup>Equal contribution.</p>
+
+        <div class="buttons">
+          <a class="button" href="#" aria-label="Paper link">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>arXiv</span>
+          </a>
+          <a class="button" href="https://github.com/Aiden0526/EvoArena" target="_blank" rel="noopener">
+            <i class="fa-brands fa-github"></i>
+            <span>Code</span>
+          </a>
+          <a class="button" href="https://huggingface.co/datasets/Aiden0526/EvoArena" target="_blank" rel="noopener">
+            <img src="static/images/hf-logo.png" alt="" class="hf-icon">
+            <span>Data</span>
+          </a>
+          <a class="button" href="#bibtex">
+            <i class="fa-solid fa-quote-right"></i>
+            <span>BibTeX</span>
+          </a>
+        </div>
+
+        <div class="hero-figure card">
+          <img src="static/images/evoarena_overall_performance.png" alt="Overall model performance on EvoArena">
+          <p>
+            Current agents struggle under persistent environment evolution, achieving 44.2% average accuracy
+            across terminal, software, and social-preference domains.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="benchmark" class="section alt">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Persistent Environment Evolution</p>
+          <h2>Three Domains Where the Environment Keeps Moving</h2>
+          <p>
+            EvoArena covers executable workflow evolution, software evolution, and preference evolution.
+            The shared challenge is version-aware reliability: agents must adapt to new conditions while
+            preserving behavior that remains valid.
+          </p>
+        </div>
+        <div class="image-frame">
+          <img src="static/images/evoarena_benchmark_overview.png" alt="EvoArena benchmark overview">
+        </div>
+
+        <div class="benchmark-detail">
+          <article class="benchmark-card">
+            <div>
+              <p class="eyebrow">Terminal-Bench-Evo</p>
+              <h3>Executable Workflow Evolution</h3>
+              <p>
+                Terminal tasks become discrete version chains. The end goal may stay fixed, but later releases
+                change deployment mechanisms, served paths, permissions, branch policies, dependencies, or tests.
+              </p>
+            </div>
+            <img src="static/images/terminal-bench.png" alt="Terminal-Bench-Evo example">
+          </article>
+
+          <article class="benchmark-card">
+            <div>
+              <p class="eyebrow">SWE-Chain-Evo</p>
+              <h3>Software Evolution</h3>
+              <p>
+                Repository milestones are evaluated chronologically. Each new requirement is solved on top of
+                the accumulated codebase state, with Pass-to-Pass tests checking that prior behavior still holds.
+              </p>
+            </div>
+            <img src="static/images/swe-evo.png" alt="SWE-Chain-Evo example">
+          </article>
+
+          <article class="benchmark-card">
+            <div>
+              <p class="eyebrow">PersonaMem-Evo</p>
+              <h3>Social Intelligence Evolution</h3>
+              <p>
+                Long conversation histories contain implicit and evolving preference evidence. Agents must answer
+                questions from the current preference state while distinguishing it from outdated but historically
+                grounded evidence.
+              </p>
+            </div>
+            <img src="static/images/persona-mem-example.png" alt="PersonaMem-Evo example">
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="composition" class="section">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">Dataset Composition</p>
+          <h2>Domain and Question-Type Distribution</h2>
+          <p>
+            EvoArena combines complementary forms of evolution. The central chart shows the domain mixture,
+            while surrounding panels break down the question or update types within each domain.
+          </p>
+          <div class="metric-notes">
+            <article>
+              <strong>Step accuracy</strong>
+              <span>Accuracy averaged over individual evolved task instances.</span>
+            </article>
+            <article>
+              <strong>Chain accuracy</strong>
+              <span>A stricter metric requiring every step in an evolution chain to be solved.</span>
+            </article>
+          </div>
+        </div>
+        <div class="image-frame">
+          <img src="static/images/evoarena_domain_stats.png" alt="Distribution of EvoArena domains and question types">
+        </div>
+      </div>
+    </section>
+
+    <section id="evomem" class="section alt">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">EvoMem</p>
+          <h2>Patch-Based Memory Evolution</h2>
+          <p>
+            EvoMem keeps the base memory system intact, but adds an append-only patch history for meaningful
+            memory changes. At inference time, agents retrieve both the latest memory and relevant patches.
+          </p>
+        </div>
+        <div class="image-frame">
+          <img src="static/images/evomem_architecture.png" alt="Overview of EvoMem patch memory architecture">
+        </div>
+        <div class="method-grid">
+          <article>
+            <span class="number">01</span>
+            <h3>Record Changes</h3>
+            <p>Capture non-additive updates, including previous state, new state, rationale, summary, and evidence.</p>
+          </article>
+          <article>
+            <span class="number">02</span>
+            <h3>Retrieve Versioned Evidence</h3>
+            <p>Return relevant historical patches alongside current memory when queries depend on evolution.</p>
+          </article>
+          <article>
+            <span class="number">03</span>
+            <h3>Preserve Agent Interfaces</h3>
+            <p>Instantiate the same abstraction for Terminus2, OpenHands, A-Mem, and Memento-Skill.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Results</p>
+          <h2>Main Results</h2>
+          <p>
+            Table 3 reports EvoArena performance with step accuracy and chain accuracy.
+            Table 4 shows that EvoMem also improves typical agent and long-horizon memory benchmarks.
+          </p>
+        </div>
+
+        <h3 class="table-title">Main Results on EvoArena</h3>
+        <div class="results-table-wrap">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Benchmark</th>
+                <th>Agent</th>
+                <th>Model</th>
+                <th>Step Base</th>
+                <th>Step +EvoMem</th>
+                <th>Step Δ</th>
+                <th>Chain Base</th>
+                <th>Chain +EvoMem</th>
+                <th>Chain Δ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="merge-cell" rowspan="9">Terminal-Bench-Evo</td><td class="merge-cell" rowspan="9">Terminus 2</td><td>GPT-5.5</td><td>62.8</td><td><strong>65.1</strong></td><td class="gain">+2.3</td><td>31.8</td><td><strong>45.5</strong></td><td class="gain">+13.7</td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>53.8</td><td><strong>56.5</strong></td><td class="gain">+2.7</td><td>39.3</td><td><strong>44.1</strong></td><td class="gain">+4.8</td></tr>
+              <tr><td>Kimi-K2.6</td><td>40.8</td><td><strong>42.9</strong></td><td class="gain">+2.1</td><td>14.9</td><td><strong>22.7</strong></td><td class="gain">+7.8</td></tr>
+              <tr><td>Gemma4-31B</td><td>23.4</td><td><strong>24.5</strong></td><td class="gain">+1.1</td><td>9.0</td><td><strong>12.4</strong></td><td class="gain">+3.4</td></tr>
+              <tr><td>Deepseek-V4-Pro</td><td>37.3</td><td><strong>40.4</strong></td><td class="gain">+3.1</td><td>13.5</td><td><strong>22.4</strong></td><td class="gain">+8.9</td></tr>
+              <tr><td>GLM-5.1</td><td>51.8</td><td><strong>55.3</strong></td><td class="gain">+3.5</td><td>34.2</td><td><strong>36.8</strong></td><td class="gain">+2.6</td></tr>
+              <tr><td>MiniMax-M2.7</td><td>41.0</td><td><strong>42.4</strong></td><td class="gain">+1.4</td><td>18.2</td><td><strong>19.5</strong></td><td class="gain">+1.3</td></tr>
+              <tr><td>Qwen3.6-27B</td><td>37.6</td><td><strong>40.9</strong></td><td class="gain">+3.3</td><td>11.1</td><td><strong>17.3</strong></td><td class="gain">+6.2</td></tr>
+              <tr class="avg-row"><td>Average</td><td>43.6</td><td><strong>46.0</strong></td><td class="gain">+2.4</td><td>21.5</td><td><strong>27.6</strong></td><td class="gain">+6.1</td></tr>
+
+              <tr><td class="merge-cell" rowspan="5">SWE-Chain-Evo</td><td class="merge-cell" rowspan="5">OpenHands</td><td>GPT-5.5</td><td>43.9</td><td><strong>48.8</strong></td><td class="gain">+4.9</td><td>18.7</td><td><strong>20.8</strong></td><td class="gain">+2.1</td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>42.7</td><td><strong>45.5</strong></td><td class="gain">+2.8</td><td>18.7</td><td><strong>22.9</strong></td><td class="gain">+4.2</td></tr>
+              <tr><td>Kimi-K2.6</td><td>42.8</td><td><strong>44.7</strong></td><td class="gain">+1.9</td><td>10.7</td><td><strong>17.9</strong></td><td class="gain">+7.2</td></tr>
+              <tr><td>Qwen3.6-27B</td><td>38.7</td><td><strong>41.7</strong></td><td class="gain">+3.0</td><td>12.5</td><td><strong>14.6</strong></td><td class="gain">+2.1</td></tr>
+              <tr class="avg-row"><td>Average</td><td>42.0</td><td><strong>45.2</strong></td><td class="gain">+3.2</td><td>15.2</td><td><strong>19.1</strong></td><td class="gain">+3.9</td></tr>
+
+              <tr><td class="merge-cell" rowspan="10">PersonaMem-Evo</td><td class="merge-cell" rowspan="10">A-Mem</td><td>GPT-5.5</td><td>40.0</td><td><strong>43.8</strong></td><td class="gain">+3.8</td><td>37.5</td><td><strong>41.2</strong></td><td class="gain">+3.7</td></tr>
+              <tr><td>GPT-5.4-mini</td><td>40.5</td><td><strong>42.5</strong></td><td class="gain">+2.0</td><td>31.9</td><td><strong>33.9</strong></td><td class="gain">+2.0</td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>46.4</td><td><strong>48.3</strong></td><td class="gain">+1.9</td><td>38.8</td><td><strong>40.8</strong></td><td class="gain">+2.0</td></tr>
+              <tr><td>Kimi-K2.6</td><td>51.5</td><td><strong>55.5</strong></td><td class="gain">+4.0</td><td>40.2</td><td><strong>50.0</strong></td><td class="gain">+9.8</td></tr>
+              <tr><td>Gemma4-31B</td><td>51.1</td><td><strong>52.9</strong></td><td class="gain">+1.8</td><td>43.5</td><td><strong>45.8</strong></td><td class="gain">+2.3</td></tr>
+              <tr><td>Deepseek-V4-Pro</td><td>47.9</td><td><strong>51.6</strong></td><td class="gain">+3.7</td><td>40.4</td><td><strong>47.4</strong></td><td class="gain">+7.0</td></tr>
+              <tr><td>GLM-5.1</td><td><strong>50.4</strong></td><td>47.5</td><td class="loss">-2.9</td><td><strong>42.5</strong></td><td>38.9</td><td class="loss">-3.7</td></tr>
+              <tr><td>MiniMax-M2.7</td><td>47.5</td><td><strong>47.9</strong></td><td class="gain">+0.4</td><td>40.9</td><td><strong>41.4</strong></td><td class="gain">+0.4</td></tr>
+              <tr><td>Qwen3.6-27B</td><td>43.5</td><td><strong>44.4</strong></td><td class="gain">+1.0</td><td>36.5</td><td><strong>39.9</strong></td><td class="gain">+3.4</td></tr>
+              <tr class="avg-row"><td>Average</td><td>46.5</td><td><strong>48.3</strong></td><td class="gain">+1.8</td><td>39.1</td><td><strong>42.1</strong></td><td class="gain">+3.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="table-title">Main Results on Typical Benchmarks</h3>
+        <div class="results-table-wrap medium-table">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Benchmark</th>
+                <th>Agent</th>
+                <th>Model</th>
+                <th>Base</th>
+                <th>+EvoMem</th>
+                <th>Δ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="merge-cell" rowspan="8">GAIA</td><td class="merge-cell" rowspan="8">Memento-S</td><td>GPT-5.5</td><td><strong>83.0</strong></td><td><strong>83.0</strong></td><td>+0.0</td></tr>
+              <tr><td>GPT-5.4-mini</td><td>40.0</td><td><strong>43.0</strong></td><td class="gain">+3.0</td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>57.0</td><td><strong>65.0</strong></td><td class="gain">+8.0</td></tr>
+              <tr><td>Gemma4-31B</td><td>45.0</td><td><strong>54.0</strong></td><td class="gain">+9.0</td></tr>
+              <tr><td>Deepseek-V4-Pro</td><td>70.0</td><td><strong>80.0</strong></td><td class="gain">+10.0</td></tr>
+              <tr><td>GLM-5.1</td><td>70.0</td><td><strong>77.0</strong></td><td class="gain">+7.0</td></tr>
+              <tr><td>Qwen3.6-27B</td><td>70.0</td><td><strong>75.0</strong></td><td class="gain">+5.0</td></tr>
+              <tr class="avg-row"><td>Average</td><td>62.5</td><td><strong>66.5</strong></td><td class="gain">+4.0</td></tr>
+
+              <tr><td class="merge-cell" rowspan="8">LoCoMo</td><td class="merge-cell" rowspan="8">A-Mem</td><td>GPT-5.5</td><td>32.9</td><td><strong>33.9</strong></td><td class="gain">+1.0</td></tr>
+              <tr><td>GPT-5.4-mini</td><td>25.1</td><td><strong>28.5</strong></td><td class="gain">+3.4</td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>21.1</td><td><strong>28.6</strong></td><td class="gain">+7.5</td></tr>
+              <tr><td>Kimi-K2.6</td><td>54.0</td><td><strong>57.7</strong></td><td class="gain">+3.7</td></tr>
+              <tr><td>Gemma4-31B</td><td>52.3</td><td><strong>55.2</strong></td><td class="gain">+2.9</td></tr>
+              <tr><td>Deepseek-V4-Pro</td><td>52.0</td><td><strong>56.5</strong></td><td class="gain">+4.5</td></tr>
+              <tr><td>Qwen3.6-27B</td><td>26.0</td><td><strong>26.3</strong></td><td class="gain">+0.3</td></tr>
+              <tr class="avg-row"><td>Average</td><td>26.3</td><td><strong>29.3</strong></td><td class="gain">+3.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="result-summary">
+          <article><strong>EvoArena:</strong> EvoMem improves average step accuracy across all three evolving domains.</article>
+          <article><strong>Chain consistency:</strong> EvoMem improves chain-level accuracy by +6.1% on Terminal-Bench-Evo, +3.9% on SWE-Chain-Evo, and +3.0% on PersonaMem-Evo.</article>
+          <article><strong>General benchmarks:</strong> EvoMem also improves GAIA by +4.0% and LoCoMo by +3.0% on average.</article>
+        </div>
+      </div>
+    </section>
+
+    <section id="analysis" class="section alt">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Analysis</p>
+          <h2>When and Why Does EvoMem Help?</h2>
+          <p>
+            The mechanism analyses indicate that EvoMem is useful when patch history becomes operational:
+            agents retrieve relevant transitions, preserve historical constraints, and recover complete evolving evidence.
+          </p>
+        </div>
+        <div class="insight-grid">
+          <article>
+            <h3>EvoMem helps when retrieved transitions are operationalized.</h3>
+            <p>
+              On Terminal-Bench-Evo, gains rise from +2.6% to +8.3% when patch uptake is nonzero,
+              showing that historical transition evidence helps most when it changes the agent's plan or commands.
+            </p>
+          </article>
+          <article>
+            <h3>EvoMem reduces regressions across backbones.</h3>
+            <p>
+              On SWE-Chain-Evo, average PASS_TO_PASS failure rates drop from 9.09% to 6.32%,
+              indicating better preservation of behavior introduced by earlier repository milestones.
+            </p>
+          </article>
+          <article>
+            <h3>EvoMem helps most when reasoning requires temporal or dispersed evidence.</h3>
+            <p>
+              On PersonaMem-Evo, temporal trajectory and multi-pattern synthesis questions gain +5.2%,
+              matching the settings where a single consolidated memory state is most likely to lose evidence.
+            </p>
+          </article>
+          <article>
+            <h3>Patch histories improve complete evidence preservation.</h3>
+            <p>
+              EvoMem improves row-level preference evidence capture from 72.5% to 74.9%,
+              with the largest capture gains on temporal trajectory and multi-pattern synthesis.
+            </p>
+          </article>
+          <article>
+            <h3>PersonaMem-Evo efficiency.</h3>
+            <p>
+              Higher token usage does not reliably translate into higher accuracy: Kimi K2.6 and Gemma4-31B-it
+              are strong while using fewer tokens than the cross-model average.
+            </p>
+          </article>
+          <article>
+            <h3>Terminal-Bench-Evo efficiency.</h3>
+            <p>
+              GPT-5.5 has the highest terminal accuracy but uses far more tokens, while Gemini 3.1 Pro and GLM-5.1
+              remain strong with much lower token budgets.
+            </p>
+          </article>
+        </div>
+        <div class="image-frame compact">
+          <img src="static/images/token_efficiency_combined.png" alt="Accuracy versus token usage across evaluated models">
+        </div>
+        <p class="figure-note">
+          The efficiency analysis shows that token usage is not a reliable proxy for capability. On PersonaMem-Evo,
+          Kimi K2.6 and Gemma4-31B-it reach strong accuracy with below-average token usage, while GPT-5.4-mini and
+          GPT-5.5 consume more tokens without matching their accuracy. On Terminal-Bench-Evo, GPT-5.5 achieves the
+          strongest accuracy but at a much higher token cost, whereas Gemini 3.1 Pro and GLM-5.1 remain competitive
+          with substantially smaller token budgets. This suggests that evolving-agent benchmarks should report
+          accuracy and inference efficiency together.
+        </p>
+      </div>
+    </section>
+
+    <section id="bibtex" class="section">
+      <div class="container narrow">
+        <div class="section-heading">
+          <p class="eyebrow">Citation</p>
+          <h2>BibTeX</h2>
+        </div>
+        <pre class="bibtex"><code>@article{xu2026evoarena,
+  title     = {EvoArena: Tracking Memory Evolution for Robust LLM Agents in Dynamic Environments},
+  author    = {Jundong Xu and Qingchuan Li and Jiaying Wu and Yihuai Lan and Shuyue Stella Li and Huichi Zhou and Bowen Jiang and Lei Wang and Jun Wang and Anh Tuan Luu and Caiming Xiong and Hae Won Park and Bryan Hooi and Zhiyuan Hu},
+  year      = {2026},
+  journal   = {arXiv preprint arXiv:xxxx},
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Website adapted from the Nerfies project-page style. Built for EvoArena.</p>
+    </div>
+  </footer>
+
+  <script src="static/js/main.js"></script>
+</body>
+</html>
