@@ -5,7 +5,7 @@
 [![Paper](https://img.shields.io/badge/arXiv-coming%20soon-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://aiden0526.github.io/EvoArena/)
 [![Code](https://img.shields.io/badge/Code-GitHub-black)](https://github.com/Aiden0526/EvoArena)
-[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/Aiden0526/EvoArena)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)]([https://huggingface.co/datasets/Aiden0526/EvoArena](https://huggingface.co/collections/Aiden0526/evoarena))
 
 > **Status.** This repository is being released progressively. The main experiment folders are
 > `EvoMem-PersonaMem-Evo/`, `EvoMem-Terminal-Bench-Evo/`, and `EvoMem-SWE-Chain-Evo/`.
