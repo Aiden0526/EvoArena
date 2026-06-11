@@ -51,7 +51,7 @@ CONFIG_SIZE="32k"
 
 # Number of worker processes launched by the runner.
 # Higher is faster but increases rate-limit / timeout pressure.
-CONFIG_BATCH="9"
+CONFIG_BATCH="10"
 
 # Number of current A-Mem memories to retrieve for each question.
 CONFIG_RETRIEVE_K="10"
@@ -91,16 +91,10 @@ CONFIG_INCLUDE_DEBUG_COLUMNS="0"
 # Leave empty to let the runner auto-name its cache directory.
 CONFIG_CACHE_ROOT=""
 
-# Legacy boolean switch for preference-aware prompting.
-# 1 = enable old behavior, 0 = disable.
-# If CONFIG_PREFERENCE_AWARE_LEVEL is not "none", that level takes precedence.
-CONFIG_PREFERENCE_AWARE="1"
-
-# Newer preference-aware control.
-# none       = original prompts
-# patch_only = preference-aware patch analysis/prompts with base graph prompts
-# full       = preference-aware everywhere; equivalent to legacy --preference_aware
-CONFIG_PREFERENCE_AWARE_LEVEL="none"
+# Preference-aware modes are fixed for the standard PersonaMem-Evo runs.
+# Robust baseline uses original prompts; patch/EvoMem uses preference-aware prompts everywhere.
+CONFIG_ROBUST_PREFERENCE_AWARE_LEVEL="none"
+CONFIG_PATCH_PREFERENCE_AWARE_LEVEL="full"
 
 # Resume behavior.
 # 1 = reuse stable output/cache paths and let the Python runner resume in place.
@@ -191,8 +185,7 @@ Common overrides:
   INCLUDE_DEBUG_COLUMNS  1 to write prompts/contexts/metadata to output
   CACHE_ROOT             Optional cache directory override
   RESUME                 1 to automatically resume from existing outputs/caches
-  PREFERENCE_AWARE       1 to use legacy preference-aware mode
-  PREFERENCE_AWARE_LEVEL none|patch_only|full
+  Preference-aware modes are fixed by run type: robust=none, patch=full.
 
 Patch-only overrides:
   PATCH_TOP_K
@@ -250,8 +243,8 @@ MAX_ITEMS="${MAX_ITEMS:-$CONFIG_MAX_ITEMS}"
 INCLUDE_DEBUG_COLUMNS="${INCLUDE_DEBUG_COLUMNS:-$CONFIG_INCLUDE_DEBUG_COLUMNS}"
 CACHE_ROOT="${CACHE_ROOT:-$CONFIG_CACHE_ROOT}"
 RESUME="${RESUME:-$CONFIG_RESUME}"
-PREFERENCE_AWARE="${PREFERENCE_AWARE:-$CONFIG_PREFERENCE_AWARE}"
-PREFERENCE_AWARE_LEVEL="${PREFERENCE_AWARE_LEVEL:-$CONFIG_PREFERENCE_AWARE_LEVEL}"
+ROBUST_PREFERENCE_AWARE_LEVEL="$CONFIG_ROBUST_PREFERENCE_AWARE_LEVEL"
+PATCH_PREFERENCE_AWARE_LEVEL="$CONFIG_PATCH_PREFERENCE_AWARE_LEVEL"
 
 PATCH_TOP_K="${PATCH_TOP_K:-$CONFIG_PATCH_TOP_K}"
 PATCH_USAGE="${PATCH_USAGE:-$CONFIG_PATCH_USAGE}"
@@ -393,14 +386,6 @@ set_common_args() {
     COMMON_ARGS+=(--cache_root "$CACHE_ROOT")
   fi
 
-  if [[ "$PREFERENCE_AWARE_LEVEL" != "none" ]]; then
-    COMMON_ARGS+=(--preference_aware_level "$PREFERENCE_AWARE_LEVEL")
-  else
-    if bool_enabled "$PREFERENCE_AWARE"; then
-      COMMON_ARGS+=(--preference_aware)
-    fi
-  fi
-
   if bool_enabled "$INCLUDE_DEBUG_COLUMNS"; then
     COMMON_ARGS+=(--save_debug_columns)
   fi
@@ -453,7 +438,7 @@ print_resolved_config() {
   echo "Persona root: ${PERSONA_ROOT:-AUTO}"
   echo "Size: $SIZE | batch: $BATCH | retrieve_k: $RETRIEVE_K"
   echo "persona_ids: ${PERSONA_IDS:-ALL} | max_items: ${MAX_ITEMS:-ALL}"
-  echo "preference_aware_level: $PREFERENCE_AWARE_LEVEL | legacy_preference_aware: $PREFERENCE_AWARE"
+  echo "preference_aware_level: robust=$ROBUST_PREFERENCE_AWARE_LEVEL | patch=$PATCH_PREFERENCE_AWARE_LEVEL"
   echo "output_dir: $OUTPUT_DIR | cache_root: ${CACHE_ROOT:-AUTO} | litellm_log: $LITELLM_LOG_LEVEL"
   echo "resume: $RESUME"
   if [[ "$RUN_TARGET" == "patch" || "$RUN_TARGET" == "both" ]]; then
@@ -488,6 +473,7 @@ for model in "${MODELS[@]}"; do
     robust_cmd=(
       python test_persona_robust.py
       "${COMMON_ARGS[@]}"
+      --preference_aware_level "$ROBUST_PREFERENCE_AWARE_LEVEL"
       --output "$robust_output"
     )
     ensure_resume_ready "$robust_output" "Persona robust"
@@ -503,6 +489,7 @@ for model in "${MODELS[@]}"; do
       python test_persona_patch.py
       "${COMMON_ARGS[@]}"
       "${PATCH_ARGS[@]}"
+      --preference_aware_level "$PATCH_PREFERENCE_AWARE_LEVEL"
       --output "$patch_output"
     )
     ensure_resume_ready "$patch_output" "Persona patch"
