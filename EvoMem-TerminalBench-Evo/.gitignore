@@ -1,0 +1,10 @@
+*.pyc
+__pycache__/
+*.egg-info/
+
+# Local credentials and run state.
+harbor_EvoMem/scripts/terminus2_llm.env
+harbor_EvoMem/runs/
+
+# Dataset lives at repo root (large; usually not committed).
+Terminal-Bench-Evo/

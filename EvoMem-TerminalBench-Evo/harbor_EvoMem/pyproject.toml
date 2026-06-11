@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "harbor-evomem"
+version = "0.1.0"
+description = "Minimal Terminus2 baseline and EvoMem runners for Harbor."
+requires-python = ">=3.11"
+authors = [{name = "qingchuan"}]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["harbor_EvoMem*"]
