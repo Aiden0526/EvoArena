@@ -11,7 +11,7 @@
 > `EvoMem-PersonaMem-Evo/`, `EvoMem-Terminal-Bench-Evo/`, and `EvoMem-SWE-Chain-Evo/`.
 
 <p align="center">
-  <img src="assets/evoarena_step_chain_scatter.png" width="92%">
+  <img src="assets/evoarena_fig1.png" width="92%">
 </p>
 
 
