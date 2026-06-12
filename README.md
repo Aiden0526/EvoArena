@@ -2,7 +2,7 @@
 
 ### Benchmarking and improving LLM agents under persistent environment evolution.
 
-[![Paper](https://img.shields.io/badge/arXiv-coming%20soon-b31b1b.svg)](https://arxiv.org/pdf/2606.13681)
+[![Paper](https://img.shields.io/badge/arXiv-2606.13681-b31b1b.svg)](https://arxiv.org/pdf/2606.13681)
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://aiden0526.github.io/EvoArena/)
 [![Code](https://img.shields.io/badge/Code-GitHub-black)](https://github.com/Aiden0526/EvoArena)
 [![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/collections/Aiden0526/evoarena)
@@ -133,7 +133,7 @@ If you use a specific benchmark subset, please also check the corresponding expe
 
 ## Links
 
-- **Paper:** [arXiv link coming soon](https://arxiv.org/pdf/2606.13681)
+- **Paper:** [https://arxiv.org/pdf/2606.13681](https://arxiv.org/pdf/2606.13681)
 - **Project page:** [https://aiden0526.github.io/EvoArena/](https://aiden0526.github.io/EvoArena/)
 - **Code:** [https://github.com/Aiden0526/EvoArena](https://github.com/Aiden0526/EvoArena)
 - **Dataset:** [https://huggingface.co/datasets/Aiden0526/EvoArena](https://huggingface.co/collections/Aiden0526/evoarena)
