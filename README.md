@@ -146,7 +146,7 @@ If you find EvoArena or EvoMem useful, please cite our paper:
 @article{xu2026evoarena,
   title   = {EvoArena: Tracking Memory Evolution for Robust LLM Agents in Dynamic Environments},
   author  = {Jundong Xu and Qingchuan Li and Jiaying Wu and Yihuai Lan and Shuyue Stella Li and Huichi Zhou and Bowen Jiang and Lei Wang and Jun Wang and Anh Tuan Luu and Caiming Xiong and Hae Won Park and Bryan Hooi and Zhiyuan Hu},
-  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  journal = {arXiv preprint arXiv:2606.13681},
   year    = {2026}
 }
 ```
